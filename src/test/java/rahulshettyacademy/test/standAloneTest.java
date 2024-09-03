@@ -20,7 +20,6 @@ public class standAloneTest {
 
 	public static void main(String[] args) {
 
-		// WebDriverManager.chromedriver().setup();
 		System.setProperty("webdriver.chrome.driver",
 				"C:/Users/sanak/Downloads/chromedriver-win64/chromedriver-win64/chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
@@ -37,20 +36,14 @@ public class standAloneTest {
 		WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".col-lg-4")));
 
-		// img[class='card-img-top']
-		// div[class*='col-lg-4']
-		// .col-lg-4
+		
 		List<WebElement> productList = driver.findElements(By.cssSelector(".col-lg-4"));
 		WebElement actualProduct = productList.stream()
 				.filter(s -> s.findElement(By.cssSelector("b")).getText().equals(pName)).findFirst().orElse(null);
 		actualProduct.findElement(By.cssSelector(".card-body button:last-of-type")).click();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#toast-container")));
-		//wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".ng-animating")));
 		wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.cssSelector(".ng-animating"))));
-
 		driver.findElement(By.cssSelector("button[routerlink='/dashboard/cart']")).click();
-		
-		// .infoWrap
 		List<WebElement> cartProduct= driver.findElements(By.cssSelector(".infoWrap"));
 		Boolean match =cartProduct.stream().anyMatch(s->s.findElement(By.cssSelector(".cartSection h3")).getText().equals(pName));
 		Assert.assertTrue(match);
